@@ -33,6 +33,10 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//If the game is pause stop making game decisions
+		if (GameStateManager.Instance.IsGamePaused) {
+			return;
+		}
 
 		refreshGUI ();
 

@@ -32,36 +32,36 @@ public class CastleCollision : MonoBehaviour {
 		}
 
 		if (other.gameObject.tag == "EnemyShipSmall") {
+			Ship ship = other.gameObject.GetComponent<Ship> ();
 			//Debug.Log ("An enemy ship hit");
-			//Debug.Log ("Reducing health from " + GameStateManager.Instance.PlayerHealth);
-			if (!gameEnded) {
+			if (!gameEnded && !ship.isSinking) {
 				GameStateManager.Instance.PlayerHealth -= 1;
 				if (enemies != null) enemies.GetComponent<PlayRandom> ().PlaySound ();
 			}
 			//Debug.Log ("Current health is " + GameStateManager.Instance.PlayerHealth);
 			GameStateManager.Instance.ShipsFloatingAround--;
 		} else if (other.gameObject.tag == "EnemyShipMedium") {
+			Ship ship = other.gameObject.GetComponent<Ship> ();
 			//Debug.Log("An enemy ship hit");
-			//Debug.Log("Reducing health from " + GameStateManager.Instance.PlayerHealth);
-			if (!gameEnded) {
+			if (!gameEnded && !ship.isSinking) {
 				GameStateManager.Instance.PlayerHealth -= 2;
 				if (enemies != null) enemies.GetComponent<PlayRandom> ().PlaySound ();
 			}
 			//Debug.Log("Current health is " + GameStateManager.Instance.PlayerHealth);
 			GameStateManager.Instance.ShipsFloatingAround--;
 		} else if (other.gameObject.tag == "EnemyShipLarge") {
+			Ship ship = other.gameObject.GetComponent<Ship> ();
 			//Debug.Log("An enemy ship hit");
-			//Debug.Log("Reducing health from " + GameStateManager.Instance.PlayerHealth);
-			if (!gameEnded) {
+			if (!gameEnded && !ship.isSinking) {
 				GameStateManager.Instance.PlayerHealth -= 3;
 				if (enemies != null) enemies.GetComponent<PlayRandom> ().PlaySound ();
 			}
 			//Debug.Log("Current health is " + GameStateManager.Instance.PlayerHealth);
 			GameStateManager.Instance.ShipsFloatingAround--;
         } else if (other.gameObject.tag == "HealthShip") {
+			Ship ship = other.gameObject.GetComponent<Ship> ();
             //Debug.Log("A health ship hit");
-            //Debug.Log("Increasing health from " + GameStateManager.Instance.PlayerHealth);
-			if (!gameEnded) {
+			if (!gameEnded && !ship.isSinking) {
 				GameStateManager.Instance.PlayerHealth += 1;
 				if (friendlies != null) friendlies.GetComponent<PlayRandom> ().PlaySound ();
 			}
@@ -71,6 +71,7 @@ public class CastleCollision : MonoBehaviour {
 			Debug.Log ("Castle hit by something else: " + other.gameObject.tag);
 		}
 
+		//Let the tsunami wash trought the castle
 		if (other.tag != "Tsunami") {
 			Destroy (other.gameObject);
 		}

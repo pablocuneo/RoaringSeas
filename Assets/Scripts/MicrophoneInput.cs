@@ -19,6 +19,7 @@ public class MicrophoneInput : MonoBehaviour {
     public int noiseLevel = 0;
     public float[] noiseThresholds = { 0.1F, 0.2F, 0.3F, 0.4F, 0.5F };
     public GameObject gui;
+	public GameObject MainMenuUI;
     private float timeAtNoiseLevel = 0F;
     private int lastNoiseLevel = 0;
     public readonly float timeAtNoiseLevelRequired = 3F;
@@ -27,6 +28,8 @@ public class MicrophoneInput : MonoBehaviour {
     private float openTime = 1F;
     public float maxOpenTime = 1F;
 	private float deadZone = 0.2F;
+	public float newWaveHeight;
+	public float maximumVolume;
 
     void StartMic() {
         if (device == null) {
@@ -42,7 +45,8 @@ public class MicrophoneInput : MonoBehaviour {
     }
 
     float CalculateMaximumVolume() {
-        float maximumVolume = 0F;
+        //float maximumVolume = 0F;
+		maximumVolume = 0F;
         if (Input.GetKey(KeyCode.R)) {
             maximumVolume = cheatVolumeLevel;
         } else {
@@ -68,6 +72,8 @@ public class MicrophoneInput : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+		newWaveHeight = GameStateManager.Instance.WaveHeight;
+
 		if (!GameStateManager.Instance.GameWon && !GameStateManager.Instance.GameLost) {
 
 			if (GameStateManager.Instance.microphoneCooldown > 0F) {
@@ -97,8 +103,8 @@ public class MicrophoneInput : MonoBehaviour {
 				timeAtNoiseLevel = 0F;
 			}
 
-			if (noiseLevel < GameStateManager.Instance.WaveHeight) {
-				GameStateManager.Instance.WaveHeight -= Time.deltaTime * 1.1F;
+			if (noiseLevel < newWaveHeight) {
+				newWaveHeight -= Time.deltaTime * 1.1F;
 				if (timeAtNoiseLevel >= timeAtNoiseLevelRequired) {
 					if (noiseLevel > 0) {
 						godCalm.GetComponent<PlayRandom> ().PlaySound ();
@@ -108,7 +114,7 @@ public class MicrophoneInput : MonoBehaviour {
 			} else {
 				if (GameStateManager.Instance.microphoneCooldown <= 0) {
 					if (openTime > 0F) {
-						GameStateManager.Instance.WaveHeight = Mathf.Lerp (GameStateManager.Instance.WaveHeight, volume * 5F, 0.1F);
+						newWaveHeight = Mathf.Lerp (newWaveHeight, volume * 5F, 0.1F);
 						godAngry.GetComponent<PlayRandom> ().PlaySound ();
 						openTime -= Time.deltaTime;
 					} else {
@@ -119,13 +125,23 @@ public class MicrophoneInput : MonoBehaviour {
 				}
 			}
 	        
-			if (GameStateManager.Instance.WaveHeight < 1)
-				GameStateManager.Instance.WaveHeight = 1;
+			if (newWaveHeight < 1)
+				newWaveHeight = 1;
 
-			if (GameStateManager.Instance.WaveHeight > 5)
-				GameStateManager.Instance.WaveHeight = 5;
-			
-			gui.GetComponentInChildren<ProgressBar> ().barProgress = (GameStateManager.Instance.WaveHeight - 1) / 4F;
+			if (newWaveHeight > 5)
+				newWaveHeight = 5;
+
+			GameStateManager.Instance.WaveHeight = newWaveHeight;
+			if (GameStateManager.Instance.IsGamePaused) {
+				MainMenuUI.GetComponentInChildren<ProgressBar> ().barProgress = (newWaveHeight - 1) / 4F;
+
+				if (newWaveHeight >= 3) {
+					MainMenuUI.GetComponent<StartOptions> ().StartGameInScene();
+					GameStateManager.Instance.WaveHeight = 1;
+				}
+			} else {
+				gui.GetComponentInChildren<ProgressBar> ().barProgress = (newWaveHeight - 1) / 4F;
+			}
 		}
     }
 }

@@ -32,8 +32,15 @@ public class StartOptions : MonoBehaviour {
 
 		//Get a reference to PlayMusic attached to UI object
 		playMusic = GetComponent<PlayMusic> ();
+
+		GameStateManager.Instance.IsGamePaused = true;
 	}
 
+	void Update(){
+		if (Input.GetKey (KeyCode.Return)) {
+			StartButtonClicked();
+		}
+	}
 
 	public void StartButtonClicked()
 	{
@@ -118,6 +125,8 @@ public class StartOptions : MonoBehaviour {
 		animMenuAlpha.SetTrigger ("fade");
 		Invoke("HideDelayed", fadeAlphaAnimationClip.length);
 		Debug.Log ("Game started in same scene! Put your game starting stuff here.");
+
+		GameStateManager.Instance.IsGamePaused = false;
 	}
 
 

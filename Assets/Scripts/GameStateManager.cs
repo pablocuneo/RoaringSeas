@@ -16,6 +16,7 @@ public class GameStateManager : UnitySingletonPersistent<GameStateManager> {
     public bool NoMoreShipsToSpawnLeft = false;
     public bool NoMoreShipsToSpawnRight = false;
     public float microphoneCooldown = 0F;
+	public bool IsGamePaused = false;
 
 
 	void Start () {

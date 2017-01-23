@@ -10,7 +10,6 @@ public class ShipSinking : MonoBehaviour {
 	public float SinkingTime = 2.0f;
 	public float explosionLingeringTime = 0.5f;
 
-	private bool isSinking;
 	private float sinkingTimer;
     private AudioSource shipDiesCue; 
     PlayRandom deathSound;
@@ -24,20 +23,20 @@ public class ShipSinking : MonoBehaviour {
 
 		if ((GameStateManager.Instance.WaveHeight > ThisShip.ShipHitpoints) ||
 			GameStateManager.Instance.GameWon || GameStateManager.Instance.GameLost){
-			this.isSinking = true;
+			ThisShip.isSinking = true;
 
 			ShipSprite.GetComponent<SpriteRenderer>().sprite = ShipSunkSprite;
 			//this.sinkingTimer = 0f;  //option to reset time
 
 			// while attacking, count up the timer.
-			if (isSinking)
+			if (ThisShip.isSinking)
 			{
 				this.sinkingTimer += Time.deltaTime;
 
 				// once the timer is 2 seconds, stop sinking and reset the sprite.
 				if (this.sinkingTimer >= SinkingTime)
 				{
-					this.isSinking = false;
+					ThisShip.isSinking = false;
 					this.sinkingTimer = 0f;
 				}
 			}

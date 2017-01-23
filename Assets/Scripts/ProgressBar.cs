@@ -12,7 +12,6 @@ public class ProgressBar : MonoBehaviour {
     void Update () {
 
         // We are revealing the filled bar by removing the 'empty bar' graphic. 
-        // Time.deltaTime is a placeholder for the actual value we want to feed the bar.
         progress.fillAmount = barProgress;
     }
 }
