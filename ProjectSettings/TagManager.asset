@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - HealthShip
+  - EnemyShipSmall
+  - EnemyShipMedium
+  - EnemyShipLarge
+  - Tsunami
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - FrontWaveLayer
+  - MiddleWaveLayer
+  - BackWaveLayer
+  - Background
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2892254067
+    locked: 0
+  - name: BackWaveSortLayer
+    uniqueID: 2486368705
+    locked: 0
+  - name: MiddleWaveSortLayer
+    uniqueID: 3521963535
+    locked: 0
+  - name: FrontWaveSortLayer
+    uniqueID: 3640566695
+    locked: 0
+  - name: CustomUI
+    uniqueID: 2846452231
+    locked: 0
