@@ -133,7 +133,8 @@ public class MicrophoneInput : MonoBehaviour {
 
 			GameStateManager.Instance.WaveHeight = newWaveHeight;
 			if (GameStateManager.Instance.IsGamePaused) {
-				MainMenuUI.GetComponentInChildren<ProgressBar> ().barProgress = (newWaveHeight - 1) / 4F;
+				if (MainMenuUI != null) 
+					MainMenuUI.GetComponentInChildren<ProgressBar> ().barProgress = (newWaveHeight - 1) / 4F;
 
 				if (newWaveHeight >= 3) {
 					MainMenuUI.GetComponent<StartOptions> ().StartGameInScene();

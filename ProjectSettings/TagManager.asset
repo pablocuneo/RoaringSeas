@@ -22,7 +22,7 @@ TagManager:
   - MiddleWaveLayer
   - BackWaveLayer
   - Background
-  - 
+  - UI Overlay
   - 
   - 
   - 
@@ -58,6 +58,6 @@ TagManager:
   - name: FrontWaveSortLayer
     uniqueID: 3640566695
     locked: 0
-  - name: CustomUI
+  - name: UI Overlay
     uniqueID: 2846452231
     locked: 0
