@@ -17,7 +17,7 @@ public class MicrophoneInput : MonoBehaviour {
     int sampleWindow = 128;
     bool isInitialized;
     public int noiseLevel = 0;
-    public float[] noiseThresholds = { 0.1F, 0.2F, 0.3F, 0.4F, 0.5F };
+	public float[] noiseThresholds;
     public GameObject gui;
 	public GameObject MainMenuUI;
     private float timeAtNoiseLevel = 0F;
@@ -27,18 +27,41 @@ public class MicrophoneInput : MonoBehaviour {
     public readonly float cooldownTime = 0.2F;
     private float openTime = 1F;
     public float maxOpenTime = 1F;
-	private float deadZone = 0.2F;
+	private float deadZone;
 	public float newWaveHeight;
 	public float maximumVolume;
 
+	public GameObject MicrophoneTestText;
+
+
+	void Start () {
+		//#if !UNITY_EDITOR && ( UNITY_ANDROID || UNITY_IOS )
+		//deadZone = 0.05F;
+		//noiseThresholds = new float[] { 0.025f, 0.05f, 0.075f, 0.1f, 0.125f };
+		//#else
+		deadZone = 0.2F;
+		noiseThresholds = new float[] { 0.1F, 0.2F, 0.3F, 0.4F, 0.5F };
+		//#endif
+
+		StartMic();
+	}
+
     void StartMic() {
         if (device == null) {
+			/*
+			int min = 0;
+			int max = 0;
+			Microphone.GetDeviceCaps(Microphone.devices[0], out min, out max);
+			Debug.Log (string.Format("MinFreq: {0} - MaxFreq: {1}", min, max));
+			*/
+
 			#if !UNITY_EDITOR && ( UNITY_ANDROID || UNITY_IOS )
-			//int min = 0;
-			//int max = 0;
-			//Microphone.GetDeviceCaps(Microphone.devices[0], out min, out max);
+			int min = 0;
+			int max = 0;
+			Microphone.GetDeviceCaps(Microphone.devices[0], out min, out max);
 			//clip = Microphone.Start(Microphone.devices[0], true, 2, max);
-			clip = Microphone.Start(Microphone.devices[0], true, 2, 44100);
+			//clip = Microphone.Start(Microphone.devices[0], true, 2, 44100);
+			clip = Microphone.Start(Microphone.devices[0], true, 999, min);
 			device = Microphone.devices[0];
 			#else
 			device = Microphone.devices[0];
@@ -54,7 +77,6 @@ public class MicrophoneInput : MonoBehaviour {
     }
 
     float CalculateMaximumVolume() {
-        //float maximumVolume = 0F;
 		maximumVolume = 0F;
         if (Input.GetKey(KeyCode.R)) {
             maximumVolume = cheatVolumeLevel;
@@ -73,13 +95,7 @@ public class MicrophoneInput : MonoBehaviour {
         
         return maximumVolume;
     }
-
-	// Use this for initialization
-	void Start () {
-        StartMic();
-	}
-
-    // Update is called once per frame
+		
     void Update() {
 		newWaveHeight = GameStateManager.Instance.WaveHeight;
 
@@ -155,5 +171,8 @@ public class MicrophoneInput : MonoBehaviour {
 				gui.GetComponentInChildren<ProgressBar> ().barProgress = (newWaveHeight - 1) / 4F;
 			}
 		}
+
+		//string showTestText = string.Format("volume: {0}, NoiseLvl: {1}, maxVol: {2}", volume, noiseLevel, maximumVolume);
+		//if (MicrophoneTestText != null) MicrophoneTestText.GetComponent<Text> ().text = showTestText;
     }
 }
