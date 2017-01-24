@@ -62,7 +62,9 @@ public class CastleCollision : MonoBehaviour {
 			Ship ship = other.gameObject.GetComponent<Ship> ();
             //Debug.Log("A health ship hit");
 			if (!gameEnded && !ship.isSinking) {
-				GameStateManager.Instance.PlayerHealth += 1;
+				if (GameStateManager.Instance.PlayerHealth < 10) {
+					GameStateManager.Instance.PlayerHealth += 1;
+				}
 				if (friendlies != null) friendlies.GetComponent<PlayRandom> ().PlaySound ();
 			}
             //Debug.Log("Current health is " + GameStateManager.Instance.PlayerHealth);

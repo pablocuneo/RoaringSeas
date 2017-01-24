@@ -24,8 +24,10 @@ public class ShipSpawnerScript : MonoBehaviour {
     public GameObject winText;
     public AnimationClip winAnimation;
 
-    private float timeSinceLastWave = 4F;
-    public float timeBetweenWaves = 6F;
+    private float timeSinceLastWave = 0F;
+    private float timeBetweenWaves = 2F;
+
+	public bool releaseNextWave = false;
 
 	int GetEnemyWaveNumber(){
 		if (GoingRight) {
@@ -82,19 +84,19 @@ public class ShipSpawnerScript : MonoBehaviour {
 		}
 
         if (!IsWaveInProgress && !win) {
-            if (timeSinceLastWave < timeBetweenWaves) {
+			if (timeSinceLastWave < timeBetweenWaves) {
                 timeSinceLastWave += Time.deltaTime;
-            } else {
+			} else if (releaseNextWave) {
 				Debug.Log("Launching wave number: " + GetEnemyWaveNumber());
                 IsWaveInProgress = true;
                 waveTime = 0F;
                 lastLaunch = -0.5F;
+				releaseNextWave = false;
             }
         }
 
         if (IsWaveInProgress) {
             waveTime += Time.deltaTime;
-
 
 			for (int i = 0; i < waves[GetEnemyWaveNumber()].Length; i++) {
                 if (lastLaunch < i * shipDelay && waveTime >= i * shipDelay) {

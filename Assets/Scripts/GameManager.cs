@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour {
     MusicControl musicControl;
 	[SerializeField]
 	AudioSource narrator;
+	public GameObject RightShipSpawner;
+	public GameObject LeftShipSpawner;
 
 	void Awake () {
 		// setup reference to game manager
@@ -33,6 +35,12 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//Quit application on android when pressing the Back button
+		#if UNITY_ANDROID
+		if (Input.GetKeyDown(KeyCode.Escape)) 
+			Application.Quit();
+		#endif
+
 		//If the game is pause stop making game decisions
 		if (GameStateManager.Instance.IsGamePaused) {
 			return;
@@ -72,8 +80,16 @@ public class GameManager : MonoBehaviour {
 
 			playedNarration = nextNarration;
 			nextNarration++;
-			narrator.GetComponent<PickSound>().PlayMe(GameStateManager.Instance.EnemyWaveNumberRight);
+			float clipLength = narrator.GetComponent<PickSound>().PlayMe(GameStateManager.Instance.EnemyWaveNumberRight);
+			Invoke ("ReleaseNextWave", clipLength);
 		}
+	}
+
+	void ReleaseNextWave () {
+		ShipSpawnerScript rightShipSpawnerScript = RightShipSpawner.GetComponent<ShipSpawnerScript> ();
+		rightShipSpawnerScript.releaseNextWave = true;
+		ShipSpawnerScript leftShipSpawnerScript = LeftShipSpawner.GetComponent<ShipSpawnerScript> ();
+		leftShipSpawnerScript.releaseNextWave = true;
 	}
 
 	void refreshGUI() {

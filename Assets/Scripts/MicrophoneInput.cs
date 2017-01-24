@@ -33,8 +33,17 @@ public class MicrophoneInput : MonoBehaviour {
 
     void StartMic() {
         if (device == null) {
-            device = Microphone.devices[0];
-            clip = Microphone.Start(device, true, 999, 44100);
+			#if !UNITY_EDITOR && ( UNITY_ANDROID || UNITY_IOS )
+			//int min = 0;
+			//int max = 0;
+			//Microphone.GetDeviceCaps(Microphone.devices[0], out min, out max);
+			//clip = Microphone.Start(Microphone.devices[0], true, 2, max);
+			clip = Microphone.Start(Microphone.devices[0], true, 2, 44100);
+			device = Microphone.devices[0];
+			#else
+			device = Microphone.devices[0];
+			clip = Microphone.Start(device, true, 999, 44100);
+			#endif
         }
     }
 
@@ -133,8 +142,10 @@ public class MicrophoneInput : MonoBehaviour {
 
 			GameStateManager.Instance.WaveHeight = newWaveHeight;
 			if (GameStateManager.Instance.IsGamePaused) {
-				if (MainMenuUI != null) 
-					MainMenuUI.GetComponentInChildren<ProgressBar> ().barProgress = (newWaveHeight - 1) / 4F;
+				if (MainMenuUI != null) {
+					ProgressBar progressBar = MainMenuUI.GetComponentInChildren<ProgressBar> ();
+					if (progressBar != null) progressBar.barProgress = (newWaveHeight - 1) / 4F;
+				}
 
 				if (newWaveHeight >= 3) {
 					MainMenuUI.GetComponent<StartOptions> ().StartGameInScene();

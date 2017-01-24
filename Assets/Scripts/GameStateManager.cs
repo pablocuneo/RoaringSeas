@@ -18,7 +18,6 @@ public class GameStateManager : UnitySingletonPersistent<GameStateManager> {
     public float microphoneCooldown = 0F;
 	public bool IsGamePaused = false;
 
-
 	void Start () {
 	}
 
