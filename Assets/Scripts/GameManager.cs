@@ -101,5 +101,12 @@ public class GameManager : MonoBehaviour {
 				UIPlayerHealth[i].SetActive(false);
 			}
 		}
+
+		if (!GameStateManager.Instance.GameWon && !GameStateManager.Instance.GameLost &&
+		    !GameStateManager.Instance.IsGamePaused) {
+			GameStateManager.Instance.AnimateDayNight = true;
+		} else {
+			GameStateManager.Instance.AnimateDayNight = false;
+		}
 	}
 }

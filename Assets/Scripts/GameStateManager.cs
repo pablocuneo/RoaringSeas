@@ -17,6 +17,7 @@ public class GameStateManager : UnitySingletonPersistent<GameStateManager> {
     public bool NoMoreShipsToSpawnRight = false;
     public float microphoneCooldown = 0F;
 	public bool IsGamePaused = false;
+	public bool AnimateDayNight = false;
 
 	void Start () {
 	}
