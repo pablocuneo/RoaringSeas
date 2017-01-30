@@ -10,8 +10,6 @@ public class ShipSpawnerScript : MonoBehaviour {
 	public GameObject EnemyShipLarge;
 	public GameObject HealthShip;
 
-	public GameObject EnemiesParentGroup;
-
 	public bool IsWaveInProgress = false;
 
 	public string[][] waves;
@@ -101,20 +99,20 @@ public class ShipSpawnerScript : MonoBehaviour {
 			for (int i = 0; i < waves[GetEnemyWaveNumber()].Length; i++) {
                 if (lastLaunch < i * shipDelay && waveTime >= i * shipDelay) {
 					string shipName = waves[GetEnemyWaveNumber()][i];
-                    switch (shipName) {
-                        case "EnemyShipSmall":
-                            Instantiate(EnemyShipSmall, transform.position, transform.rotation);
-                            break;
-                        case "EnemyShipMedium":
-                            Instantiate(EnemyShipMedium, transform.position, transform.rotation);
-                            break;
-                        case "EnemyShipLarge":
-                            Instantiate(EnemyShipLarge, transform.position, transform.rotation);
-                            break;
-                        case "HealthShip":
-                            Instantiate(HealthShip, transform.position, transform.rotation);
-                            break;
-                    }
+					switch (shipName) {
+					case "EnemyShipSmall":
+						Instantiate (EnemyShipSmall, transform.position, transform.rotation, this.transform);
+						break;
+					case "EnemyShipMedium":
+						Instantiate (EnemyShipMedium, transform.position, transform.rotation, this.transform);
+						break;
+					case "EnemyShipLarge":
+						Instantiate (EnemyShipLarge, transform.position, transform.rotation, this.transform);
+						break;
+					case "HealthShip":
+						Instantiate (HealthShip, transform.position, transform.rotation, this.transform);
+						break;
+					}
                     lastLaunch = waveTime;
                 }
             }
